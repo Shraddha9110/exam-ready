@@ -9,15 +9,24 @@
 <body>
   <!-- Start screen: shown first. -->
   <section id="start-screen">
+    <p class="brand">Globio</p>
     <h1>Am I exam-ready?</h1>
-    <p>Answer 15 questions in about 5 minutes. The check covers vocabulary, grammar and reading.</p>
+    <p class="lead">Answer 15 questions in about 5 minutes. The check covers vocabulary, grammar and reading.</p>
+    <ul class="facts">
+      <li><strong>15</strong> questions</li>
+      <li><strong>5</strong> minutes</li>
+      <li><strong>3</strong> skills</li>
+    </ul>
     <button id="start-button" type="button">Start</button>
   </section>
 
   <!-- Quiz screen: one question at a time. Hidden until Start is clicked. -->
   <section id="quiz-screen" hidden>
-    <p id="progress-text"></p>
-    <p id="skill-name"></p>
+    <p class="brand">Globio</p>
+    <div class="quiz-top">
+      <p id="progress-text"></p>
+      <p id="skill-name"></p>
+    </div>
     <pre id="reading-text" hidden></pre>
     <h2 id="question-text"></h2>
     <div id="options"></div>
@@ -27,8 +36,11 @@
 
   <!-- Results screen: hidden until all 15 questions are answered. -->
   <section id="results-screen" hidden>
-    <h2 id="status-text"></h2>
-    <p id="status-meaning"></p>
+    <p class="brand">Globio</p>
+    <div class="result-banner">
+      <h2 id="status-text"></h2>
+      <p id="status-meaning"></p>
+    </div>
 
     <h3>Scores</h3>
     <div id="skill-bars"></div>
