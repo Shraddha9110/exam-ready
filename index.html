@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Am I exam-ready?</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Start screen: the only screen a learner sees in this phase. -->
+  <section id="start-screen">
+    <h1>Am I exam-ready?</h1>
+  </section>
+
+  <!-- Quiz screen: hidden until the quiz flow is built. -->
+  <section id="quiz-screen" hidden>
+  </section>
+
+  <!-- Results screen: hidden until the results screen is built. -->
+  <section id="results-screen" hidden>
+  </section>
+
+  <!-- Load data first, then scoring, then the app. -->
+  <script src="js/questions.js"></script>
+  <script src="js/scoring.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
