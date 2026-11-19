@@ -7,17 +7,37 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Start screen: the only screen a learner sees in this phase. -->
+  <!-- Start screen: shown first. -->
   <section id="start-screen">
     <h1>Am I exam-ready?</h1>
+    <p>Answer 15 questions in about 5 minutes. The check covers vocabulary, grammar and reading.</p>
+    <button id="start-button" type="button">Start</button>
   </section>
 
-  <!-- Quiz screen: hidden until the quiz flow is built. -->
+  <!-- Quiz screen: one question at a time. Hidden until Start is clicked. -->
   <section id="quiz-screen" hidden>
+    <p id="progress-text"></p>
+    <p id="skill-name"></p>
+    <pre id="reading-text" hidden></pre>
+    <h2 id="question-text"></h2>
+    <div id="options"></div>
+    <button id="next-button" type="button" disabled>Next</button>
+    <button id="start-over-button" class="secondary" type="button">Start over</button>
   </section>
 
-  <!-- Results screen: hidden until the results screen is built. -->
+  <!-- Results screen: hidden until all 15 questions are answered. -->
   <section id="results-screen" hidden>
+    <h2 id="status-text"></h2>
+    <p id="status-meaning"></p>
+
+    <h3>Scores</h3>
+    <div id="skill-bars"></div>
+
+    <h3>What to practise before booking</h3>
+    <div id="practice-list"></div>
+
+    <p id="exam-note">This check covers vocabulary, grammar and reading. The real exam also tests listening, writing and speaking, so practise those too.</p>
+    <button id="restart-button" type="button">Take the check again</button>
   </section>
 
   <!-- Load data first, then scoring, then the app. -->

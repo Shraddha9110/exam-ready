@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 3 preview</title>
+  <link rel="stylesheet" href="preview.css">
+</head>
+<body>
+  <p><a href="index.html">All phases</a></p>
+  <h1>Phase 3: Scoring engine</h1>
+  <p>This page runs the real scoring function on four answer patterns. The quiz screen is still empty.</p>
+
+  <h2>The three lines</h2>
+  <ul>
+    <li id="line-ready"></li>
+    <li id="line-skill"></li>
+    <li id="line-almost"></li>
+  </ul>
+
+  <div id="examples"></div>
+
+  <script src="../js/questions.js"></script>
+  <script src="../js/scoring.js"></script>
+  <script>
+    // A function keeps these names local. The browser already uses "title" and "status".
+    function showPhase3Preview() {
+    // Show the three cutoff numbers from scoring.js.
+    document.getElementById("line-ready").textContent = "Ready to book: overall at least " + READY_OVERALL + "%.";
+    document.getElementById("line-skill").textContent = "And every skill at least " + READY_MIN_PER_SKILL + "%.";
+    document.getElementById("line-almost").textContent = "Almost there: overall at least " + ALMOST_OVERALL + "%, but not yet ready.";
+
+    function wrongIndex(question) {
+      if (question.correctIndex === 0) {
+        return 1;
+      }
+      return 0;
+    }
+
+    function answersAllCorrect(questions) {
+      var answers = [];
+      var index = 0;
+      for (index = 0; index < questions.length; index = index + 1) {
+        answers.push(questions[index].correctIndex);
+      }
+      return answers;
+    }
+
+    function answersAllWrong(questions) {
+      var answers = [];
+      var index = 0;
+      for (index = 0; index < questions.length; index = index + 1) {
+        answers.push(wrongIndex(questions[index]));
+      }
+      return answers;
+    }
+
+    function answersGrammarMostlyWrong(questions) {
+      var answers = answersAllCorrect(questions);
+      var index = 0;
+      var grammarSeen = 0;
+      for (index = 0; index < questions.length; index = index + 1) {
+        if (questions[index].skill === "grammar") {
+          grammarSeen = grammarSeen + 1;
+          if (grammarSeen > 1) {
+            answers[index] = wrongIndex(questions[index]);
+          }
+        }
+      }
+      return answers;
+    }
+
+    function answersWithFirstCorrect(questions, correctCount) {
+      var answers = [];
+      var index = 0;
+      for (index = 0; index < questions.length; index = index + 1) {
+        if (index < correctCount) {
+          answers.push(questions[index].correctIndex);
+        } else {
+          answers.push(wrongIndex(questions[index]));
+        }
+      }
+      return answers;
+    }
+
+    // Four patterns that match the tests.
+    var examples = [
+      {
+        title: "All 15 correct",
+        answers: answersAllCorrect(QUESTIONS)
+      },
+      {
+        title: "All 15 wrong",
+        answers: answersAllWrong(QUESTIONS)
+      },
+      {
+        title: "Vocabulary 5/5, reading 5/5, grammar 1/5",
+        answers: answersGrammarMostlyWrong(QUESTIONS)
+      },
+      {
+        title: "First 9 correct (60%)",
+        answers: answersWithFirstCorrect(QUESTIONS, 9)
+      }
+    ];
+
+    var examplesBox = document.getElementById("examples");
+    var exampleIndex = 0;
+
+    for (exampleIndex = 0; exampleIndex < examples.length; exampleIndex = exampleIndex + 1) {
+      var example = examples[exampleIndex];
+      var result = calculateResults(QUESTIONS, example.answers);
+      var block = document.createElement("article");
+
+      var heading = document.createElement("h2");
+      heading.textContent = example.title;
+      block.appendChild(heading);
+
+      var scores = document.createElement("p");
+      scores.textContent = "Vocabulary " + result.skillScores.vocabulary +
+        "%, grammar " + result.skillScores.grammar +
+        "%, reading " + result.skillScores.reading +
+        "%. Overall " + result.overallScore + "%.";
+      block.appendChild(scores);
+
+      var statusLine = document.createElement("p");
+      statusLine.textContent = "Status: " + result.status;
+      block.appendChild(statusLine);
+
+      var weak = document.createElement("p");
+      if (result.weakAreas.length === 0) {
+        weak.textContent = "Weak areas: none.";
+      } else {
+        weak.textContent = "Weak areas: " + result.weakAreas.join(", ") + ".";
+      }
+      block.appendChild(weak);
+
+      var tipIndex = 0;
+      for (tipIndex = 0; tipIndex < result.weakAreas.length; tipIndex = tipIndex + 1) {
+        var subtopic = result.weakAreas[tipIndex];
+        var tip = document.createElement("p");
+        tip.className = "note";
+        tip.textContent = subtopic + " — " + PRACTICE_TIPS[subtopic];
+        block.appendChild(tip);
+      }
+
+      examplesBox.appendChild(block);
+    }
+    }
+
+    showPhase3Preview();
+  </script>
+</body>
+</html>

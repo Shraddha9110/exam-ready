@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phase 2 preview</title>
+  <link rel="stylesheet" href="preview.css">
+</head>
+<body>
+  <p><a href="index.html">All phases</a></p>
+  <h1>Phase 2: Question data</h1>
+  <p>This phase added the 15 questions and the email they read. The quiz screen is still empty. The bold option is the correct answer. The number in front of each option is its <code>correctIndex</code> (counting starts at 0).</p>
+
+  <h2>Reading text</h2>
+  <p class="note">The five reading questions are about this email.</p>
+  <pre id="reading-text" class="reading"></pre>
+
+  <div id="question-list"></div>
+
+  <!-- questions.js creates QUESTIONS and READING_TEXT. -->
+  <script src="../js/questions.js"></script>
+  <script>
+    // Put the email on the page.
+    var readingBox = document.getElementById("reading-text");
+    readingBox.textContent = READING_TEXT;
+
+    // Then show every question, with a heading when the skill changes.
+    var list = document.getElementById("question-list");
+    var lastSkill = "";
+    var index = 0;
+
+    for (index = 0; index < QUESTIONS.length; index = index + 1) {
+      var item = QUESTIONS[index];
+
+      if (item.skill !== lastSkill) {
+        var skillHeading = document.createElement("h2");
+        skillHeading.textContent = item.skill;
+        list.appendChild(skillHeading);
+        lastSkill = item.skill;
+      }
+
+      var block = document.createElement("article");
+
+      var title = document.createElement("h3");
+      title.textContent = item.id + ". " + item.question;
+      block.appendChild(title);
+
+      var meta = document.createElement("p");
+      meta.className = "meta";
+      meta.textContent = "subtopic: " + item.subtopic;
+      block.appendChild(meta);
+
+      var options = document.createElement("ul");
+      var optionIndex = 0;
+
+      for (optionIndex = 0; optionIndex < item.options.length; optionIndex = optionIndex + 1) {
+        var option = document.createElement("li");
+        option.textContent = optionIndex + " — " + item.options[optionIndex];
+
+        if (optionIndex === item.correctIndex) {
+          option.className = "correct";
+          option.textContent = option.textContent + " (correct)";
+        }
+
+        options.appendChild(option);
+      }
+
+      block.appendChild(options);
+      list.appendChild(block);
+    }
+  </script>
+</body>
+</html>
